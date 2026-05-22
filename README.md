@@ -4,14 +4,13 @@ Este proyecto es un programa desarrollado en C++ que permite administrar la info
 
 El sistema busca resolver problemas comunes en torneos organizados manualmente, como:
 
-- jugadores duplicados,
-- mala organización de partidos,
-- pérdida de información,
-- conflictos en horarios,
-- errores al registrar resultados.
+- Jugadores duplicados.
+- Mala organización de partidos.
+- Pérdida de información.
+- Conflictos en horarios.
+- Errores al registrar resultados.
 
-
-Este sistema permite:
+## Este sistema permite
 
 - Registrar equipos dentro del torneo.
 - Registrar jugadores con información básica como ID, nombre, edad, posición y número.
@@ -21,17 +20,41 @@ Este sistema permite:
 - Registrar resultados de los encuentros.
 - Consultar información de equipos y partidos.
 - Organizar la información del torneo de manera más clara y estructurada.
+- Evitar jugadores duplicados dentro de un mismo equipo.
+- Evitar equipos duplicados dentro del torneo.
+- Evitar resultados con goles negativos.
+- Evitar partidos donde el equipo local y visitante sean el mismo.
+
+## Relaciones UML utilizadas
 
 El sistema utiliza relaciones UML para representar correctamente la interacción entre las clases:
 
-Herencia: Las clases Jugador y Arbitro heredan de la clase abstracta Persona para reutilizar atributos comunes.
+- **Herencia:** Las clases `Jugador` y `Arbitro` heredan de la clase abstracta `Persona` para reutilizar atributos comunes como ID, nombre y edad.
 
-Agregación: Un Equipo contiene múltiples Jugadores, pero los jugadores pueden existir independientemente.
+- **Agregación:** Un `Equipo` contiene múltiples `Jugadores`, pero los jugadores pueden existir como registros independientes.
 
-Asociación: Un Partido utiliza Equipos y un Árbitro para poder realizarse.
+- **Asociación:** Un `Partido` utiliza `Equipos` y un `Arbitro` para poder realizarse.
 
-Composición: Un Torneo contiene Partidos, ya que los partidos pertenecen directamente al torneo.
+- **Composición:** Un `Torneo` contiene `Partidos`, ya que los partidos pertenecen directamente al torneo.
 
+## Clases principales
+
+El proyecto trabaja con las siguientes clases:
+
+- `Persona`: clase abstracta que contiene datos generales.
+- `Jugador`: representa a los jugadores registrados en el torneo.
+- `Arbitro`: representa al árbitro asignado a los partidos.
+- `Equipo`: administra la información del equipo y sus jugadores.
+- `Partido`: representa un encuentro entre dos equipos.
+- `Torneo`: administra los equipos y partidos del torneo.
+
+## Archivos del proyecto
+
+- `persona.h`: contiene las clases `Persona`, `Jugador` y `Arbitro`.
+- `torneo.h`: contiene las clases `Equipo`, `Partido` y `Torneo`.
+- `main.cpp`: contiene las pruebas principales del sistema.
+
+## Casos que podrían afectar el funcionamiento del sistema
 
 Durante el análisis del problema se identificaron algunos casos que podrían afectar el funcionamiento correcto del sistema, por ejemplo:
 
@@ -43,13 +66,15 @@ Durante el análisis del problema se identificaron algunos casos que podrían af
 - Programar partidos con horarios repetidos.
 - Intentar eliminar jugadores inexistentes.
 
-Este sistema no fue creado para:
+## Cómo compilar y ejecutar desde consola
 
-- Guardar información después de cerrar el programa.
-- Manejar múltiples torneos al mismo tiempo.
-- Generar estadísticas avanzadas automáticamente.
-- Utilizar bases de datos o conexión a internet.
-- Contar con interfaz gráfica.
-- Administrar cuentas o usuarios.
+Para compilar el programa desde consola, primero asegúrate de tener los archivos `main.cpp`, `persona.h` y `torneo.h` en la misma carpeta.
 
-El proyecto fue diseñado como una base escalable que podrá ampliarse en futuras versiones agregando nuevas funcionalidades y validaciones.
+COMO SE USA: Presiona: Win + R → escribe "cmd" → Enter
+
+En la consola escribes: cd C:(la carpeta donde están tus archivos) y presionas Enter.
+
+Ya en la carpeta del proyecto, escribe: g++ main.cpp -o torneo
+
+Para ejecutar el programa en Windows escribe: torneo
+En Mac o Linux, después de compilarlo, se ejecuta con: ./torneo
