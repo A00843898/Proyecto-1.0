@@ -72,7 +72,7 @@ Para compilar el programa desde consola, primero asegúrate de tener los archivo
 
 COMO SE USA: Presiona: Win + R → escribe "cmd" → Enter
 
-En la consola escribes: cd C:(la carpeta donde están tus archivos) y presionas Enter.
+En la consola escribes: cd /d  "C:(la carpeta donde están tus archivos)" y presionas Enter.
 
 Ya en la carpeta del proyecto, escribe: g++ main.cpp -o torneo
 
