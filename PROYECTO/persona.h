@@ -18,18 +18,21 @@ protected:
     int id;
     string nombre;
     int edad;
+    string tipo;
 
 public:
     Persona() {
         id = 0;
         nombre = "";
         edad = 0;
+        tipo = "";
     }
 
-    Persona(int id_num, string nom, int ed) {
+    Persona(int id_num, string nom, int ed, string tip) {
         id = id_num;
         nombre = nom;
         edad = ed;
+        tipo = tip;
     }
 
     int getId() {
@@ -42,6 +45,10 @@ public:
 
     int getEdad() {
         return edad;
+    }
+
+    string getTipo() {
+        return tipo;
     }
 
     void setNombre(string nom) {
@@ -64,13 +71,13 @@ private:
     int numero;
 
 public:
-    Jugador() : Persona() {
+    Jugador() : Persona(0, "", 0, "jugador") {
         posicion = "";
         numero = 0;
     }
 
     Jugador(int id_num, string nom, int ed, string pos, int num)
-        : Persona(id_num, nom, ed) {
+        : Persona(id_num, nom, ed, "jugador") {
         posicion = pos;
         numero = num;
     }
@@ -108,12 +115,12 @@ private:
     int experiencia;
 
 public:
-    Arbitro() : Persona() {
+    Arbitro() : Persona(0, "", 0, "arbitro") {
         experiencia = 0;
     }
 
     Arbitro(int id_num, string nom, int ed, int exp)
-        : Persona(id_num, nom, ed) {
+        : Persona(id_num, nom, ed, "arbitro") {
         experiencia = exp;
     }
 
