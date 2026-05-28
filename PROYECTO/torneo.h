@@ -1,5 +1,6 @@
 /*
  * Este archivo contiene las clases Equipo, Partido y Torneo.
+ * En la clase Torneo se aplica polimorfismo usando apuntadores a Persona.
  */
 
 #ifndef TORNEO_H_
@@ -12,6 +13,8 @@
 #include "persona.h"
 
 using namespace std;
+
+const int MAX_PERSONAS = 100;
 
 // Clase Equipo
 class Equipo {
@@ -210,13 +213,19 @@ private:
     vector<Equipo> listaEquipos;
     vector<Partido> listaPartidos;
 
+    // Arreglo de apuntadores para aplicar polimorfismo
+    Persona *personas[MAX_PERSONAS];
+    int totalPersonas;
+
 public:
     Torneo() {
         nombre = "";
+        totalPersonas = 0;
     }
 
     Torneo(string nom) {
         nombre = nom;
+        totalPersonas = 0;
     }
 
     string getNombre() {
@@ -294,6 +303,60 @@ public:
             for (int i = 0; i < listaPartidos.size(); i++) {
                 listaPartidos[i].mostrarResultado();
             }
+        }
+    }
+
+    /*
+     * Metodo que registra personas en el torneo.
+     * Recibe un apuntador a Persona, por lo que puede recibir
+     * objetos de tipo Jugador o Arbitro.
+     */
+    void registrarPersona(Persona *persona) {
+        if (totalPersonas < MAX_PERSONAS) {
+            personas[totalPersonas] = persona;
+            totalPersonas++;
+            cout << "Persona registrada correctamente en el torneo." << endl;
+        } else {
+            cout << "No se pudo registrar. Se alcanzo el limite de personas." << endl;
+        }
+    }
+
+    /*
+     * Metodo que muestra todas las personas registradas.
+     * Aqui se aplica polimorfismo porque cada objeto ejecuta
+     * su propia version de mostrarInfo().
+     */
+    void mostrarPersonas() {
+        cout << "\nPersonas registradas en el torneo: " << nombre << endl;
+
+        if (totalPersonas == 0) {
+            cout << "No hay personas registradas." << endl;
+        } else {
+            for (int i = 0; i < totalPersonas; i++) {
+                personas[i]->mostrarInfo();
+            }
+        }
+    }
+
+    /*
+     * Sobrecarga del metodo mostrarPersonas.
+     * Permite mostrar solamente jugadores o solamente arbitros.
+     */
+    void mostrarPersonas(string tipo) {
+        bool encontrado = false;
+
+        cout << "\nPersonas de tipo " << tipo
+             << " registradas en el torneo: " << nombre << endl;
+
+        for (int i = 0; i < totalPersonas; i++) {
+            if (personas[i]->getTipo() == tipo) {
+                personas[i]->mostrarInfo();
+                encontrado = true;
+            }
+        }
+
+        if (!encontrado) {
+            cout << "No hay personas registradas de ese tipo." << endl;
         }
     }
 };
