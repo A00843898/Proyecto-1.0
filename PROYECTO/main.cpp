@@ -23,6 +23,7 @@ int main() {
     Jugador jugadora3(3, "Regina Perez", 18, "Delantera", 9);
 
     Arbitro arbitro1(1, "Jorge Sanchez", 35, 8);
+    Arbitro arbitro2(2, "Laura Fernandez", 30, 5);
 
     cout << "\n--- Prueba de sobreescritura de mostrarInfo() ---" << endl;
     jugadora1.mostrarInfo();
@@ -51,11 +52,27 @@ int main() {
     torneo.mostrarEquipos();
     torneo.mostrarEquipos("Leonas FC");
 
+    cout << "\n--- Registro de personas en torneo para polimorfismo ---" << endl;
+    torneo.registrarPersona(&jugadora1);
+    torneo.registrarPersona(&jugadora2);
+    torneo.registrarPersona(&jugadora3);
+    torneo.registrarPersona(&arbitro1);
+    torneo.registrarPersona(&arbitro2);
+
+    cout << "\n--- Prueba de polimorfismo: mostrar todas las personas ---" << endl;
+    torneo.mostrarPersonas();
+
+    cout << "\n--- Prueba de polimorfismo y sobrecarga: mostrar solo jugadores ---" << endl;
+    torneo.mostrarPersonas("jugador");
+
+    cout << "\n--- Prueba de polimorfismo y sobrecarga: mostrar solo arbitros ---" << endl;
+    torneo.mostrarPersonas("arbitro");
+
     cout << "\n--- Registro de partidos ---" << endl;
     Partido partido1("20/05/2026", "18:00", equipo1, equipo2, arbitro1);
     partido1.registrarResultado(2, 1);
 
-    Partido partido2("22/05/2026", "20:00", equipo2, equipo1, arbitro1);
+    Partido partido2("22/05/2026", "20:00", equipo2, equipo1, arbitro2);
     partido2.registrarResultado();
 
     torneo.registrarPartido(partido1);
