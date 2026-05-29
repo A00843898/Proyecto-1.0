@@ -24,6 +24,8 @@ El sistema busca resolver problemas comunes en torneos organizados manualmente, 
 - Evitar equipos duplicados dentro del torneo.
 - Evitar resultados con goles negativos.
 - Evitar partidos donde el equipo local y visitante sean el mismo.
+- Registrar personas involucradas en el torneo utilizando polimorfismo.
+- Mostrar personas registradas por tipo, como jugadores o árbitros.
 
 ## Relaciones UML utilizadas
 
