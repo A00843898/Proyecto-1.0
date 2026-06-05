@@ -1,6 +1,6 @@
 /*
- * Este archivo contiene las clases Equipo, Partido y Torneo.
- * En la clase Torneo se aplica polimorfismo usando apuntadores a Persona.
+ * Contiene las clases Equipo, Partido y Torneo.
+ * En Torneo se aplica polimorfismo usando apuntadores a Persona.
  */
 
 #ifndef TORNEO_H_
@@ -51,12 +51,21 @@ public:
         entrenador = ent;
     }
 
+    // Sobrecarga del operador
+    // Dos equipos se consideran iguales si tienen el mismo nombre.
+    bool operator==(Equipo otro) {
+        return nombre == otro.getNombre();
+    }
+
     bool existeJugador(int idJugador) {
+        Jugador buscado(idJugador, "", 0, "", 0);
+
         for (int i = 0; i < listaJugadores.size(); i++) {
-            if (listaJugadores[i].getId() == idJugador) {
+            if (listaJugadores[i] == buscado) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -95,6 +104,7 @@ public:
         }
     }
 
+    // Sobrecarga del metodo mostrarPlantilla()
     void mostrarPlantilla(string posicion) {
         bool encontrado = false;
 
@@ -175,6 +185,7 @@ public:
         cout << "Resultado registrado como empate 0-0." << endl;
     }
 
+    // Sobrecarga del metodo registrarResultado()
     void registrarResultado(int golesL, int golesV) {
         if (golesL < 0 || golesV < 0) {
             cout << "Error: no se pueden registrar goles negativos." << endl;
@@ -213,7 +224,7 @@ private:
     vector<Equipo> listaEquipos;
     vector<Partido> listaPartidos;
 
-    // Arreglo de apuntadores para aplicar polimorfismo
+    // Arreglo para aplicar polimorfismo
     Persona *personas[MAX_PERSONAS];
     int totalPersonas;
 
@@ -237,11 +248,14 @@ public:
     }
 
     bool existeEquipo(string nombreEquipo) {
+        Equipo buscado(nombreEquipo, "");
+
         for (int i = 0; i < listaEquipos.size(); i++) {
-            if (listaEquipos[i].getNombre() == nombreEquipo) {
+            if (listaEquipos[i] == buscado) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -276,6 +290,7 @@ public:
         }
     }
 
+    // Sobrecarga del metodo mostrarEquipos()
     void mostrarEquipos(string nombreEquipo) {
         bool encontrado = false;
 
@@ -306,24 +321,32 @@ public:
         }
     }
 
-    /*
-     * Metodo que registra personas en el torneo.
-     * Recibe un apuntador a Persona, por lo que puede recibir
-     * objetos de tipo Jugador o Arbitro.
-     */
+    bool existePersona(Persona *persona) {
+        for (int i = 0; i < totalPersonas; i++) {
+            if (personas[i]->getId() == persona->getId() &&
+                personas[i]->getTipo() == persona->getTipo()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void registrarPersona(Persona *persona) {
-        if (totalPersonas < MAX_PERSONAS) {
+        if (totalPersonas >= MAX_PERSONAS) {
+            cout << "No se pudo registrar. Se alcanzo el limite de personas." << endl;
+        } else if (existePersona(persona)) {
+            cout << "No se pudo registrar. La persona ya existe en el torneo." << endl;
+        } else {
             personas[totalPersonas] = persona;
             totalPersonas++;
             cout << "Persona registrada correctamente en el torneo." << endl;
-        } else {
-            cout << "No se pudo registrar. Se alcanzo el limite de personas." << endl;
         }
     }
 
     /*
      * Metodo que muestra todas las personas registradas.
-     * Aqui se aplica polimorfismo porque cada objeto ejecuta
+     * se aplica polimorfismo porque cada objeto ejecuta
      * su propia version de mostrarInfo().
      */
     void mostrarPersonas() {
@@ -338,10 +361,7 @@ public:
         }
     }
 
-    /*
-     * Sobrecarga del metodo mostrarPersonas.
-     * Permite mostrar solamente jugadores o solamente arbitros.
-     */
+    // Sobrecarga del metodo mostrarPersonas()
     void mostrarPersonas(string tipo) {
         bool encontrado = false;
 

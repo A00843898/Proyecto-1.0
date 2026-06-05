@@ -1,6 +1,6 @@
 /*
- * Este archivo contiene la clase abstracta Persona
- * y las clases Jugador y Arbitro, que heredan de Persona.
+ * Contiene la clase abstracta Persona
+ * y las clases Jugador y Arbitro que heredan de Persona.
  */
 
 #ifndef PERSONA_H_
@@ -35,6 +35,9 @@ public:
         tipo = tip;
     }
 
+    // usar correctamente apuntadores a Persona
+    virtual ~Persona() {}
+
     int getId() {
         return id;
     }
@@ -59,7 +62,7 @@ public:
         edad = ed;
     }
 
-    // Metodo abstracto que se sobreescribe en las clases hijas
+    // hace que Persona sea clase abstracta
     virtual void mostrarInfo() = 0;
 };
 
@@ -96,6 +99,12 @@ public:
 
     void setNumero(int num) {
         numero = num;
+    }
+
+    // Sobrecarga del operador ==
+    // Dos jugadores se consideran iguales si tienen el mismo ID.
+    bool operator==(Jugador otro) {
+        return id == otro.getId();
     }
 
     // Sobreescritura del metodo mostrarInfo()
