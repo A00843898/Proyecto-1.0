@@ -9,6 +9,7 @@ El sistema busca resolver problemas comunes en torneos organizados manualmente, 
 - Pérdida de información.
 - Conflictos en horarios.
 - Errores al registrar resultados.
+- Falta de control sobre las personas involucradas en el torneo.
 
 ## Este sistema permite
 
@@ -16,18 +17,19 @@ El sistema busca resolver problemas comunes en torneos organizados manualmente, 
 - Registrar jugadores con información básica como ID, nombre, edad, posición y número.
 - Asociar jugadores a un equipo específico.
 - Registrar árbitros para los partidos.
+- Registrar personas dentro de una liga utilizando polimorfismo.
+- Mostrar personas registradas por tipo, como jugadores o árbitros.
 - Crear partidos entre dos equipos.
+- Asignar un árbitro a un partido.
 - Registrar resultados de los encuentros.
-- Consultar información de equipos y partidos.
-- Organizar la información del torneo de manera más clara y estructurada.
+- Consultar información de equipos, plantillas, personas y partidos.
 - Evitar jugadores duplicados dentro de un mismo equipo.
 - Evitar equipos duplicados dentro del torneo.
 - Evitar resultados con goles negativos.
 - Evitar partidos donde el equipo local y visitante sean el mismo.
-- Registrar personas involucradas en el torneo utilizando polimorfismo.
-- Mostrar personas registradas por tipo, como jugadores o árbitros.
 
 ## Funcionamiento actual del programa
+
 Actualmente, el menú permite:
 
 1. Cargar datos de prueba.
@@ -36,64 +38,82 @@ Actualmente, el menú permite:
 4. Registrar árbitro.
 5. Mostrar equipos.
 6. Mostrar plantilla de un equipo.
-7. Mostrar personas registradas.
+7. Mostrar personas registradas en la liga.
 8. Crear partido y registrar resultado.
 9. Mostrar partidos.
 0. Salir.
 
+## Clases del proyecto
+
+### Persona
+
+Es una clase abstracta que contiene la información general de una persona dentro del sistema, como ID, nombre, edad y tipo. Tiene el método abstracto `mostrarInfo()`, el cual es sobreescrito por las clases hijas.
+
+### Jugador
+
+La clase `Jugador` hereda de `Persona`. Representa a un jugador registrado en el sistema. Además de los atributos heredados, contiene posición y número.
+
+### Arbitro
+
+La clase `Arbitro` hereda de `Persona`. Representa a un árbitro registrado en la liga. Además de los atributos heredados, contiene los años de experiencia.
+
+### Liga
+
+La clase `Liga` se encarga de registrar a las personas involucradas en el sistema. Utiliza un arreglo de apuntadores a `Persona`, lo que permite guardar tanto jugadores como árbitros en el mismo arreglo. En esta clase se aplica el polimorfismo.
+
+### Equipo
+
+La clase `Equipo` representa a un equipo dentro del torneo. Contiene nombre, entrenador y una lista de jugadores. También permite agregar jugadores, eliminar jugadores y mostrar la plantilla completa o filtrada por posición.
+
+### Partido
+
+La clase `Partido` representa un encuentro entre dos equipos. Contiene fecha, hora, goles del equipo local, goles del equipo visitante, equipo local, equipo visitante, árbitro asignado y si el partido ya fue jugado.
+
+### Torneo
+
+La clase `Torneo` administra los equipos y partidos registrados. Contiene una lista de equipos y una lista de partidos. En esta versión, `Torneo` se enfoca en la organización de equipos y partidos, mientras que `Liga` se encarga de las personas.
 
 ## Relaciones UML utilizadas
 
-El sistema utiliza relaciones UML para representar correctamente la interacción entre las clases:
+El sistema utiliza relaciones UML para representar la interacción entre las clases:
 
-- **Herencia:** Las clases `Jugador` y `Arbitro` heredan de la clase abstracta `Persona` para reutilizar atributos comunes como ID, nombre y edad.
-
-- **Agregación:** Un `Equipo` contiene múltiples `Jugadores`, pero los jugadores pueden existir como registros independientes.
-
-- **Asociación:** Un `Partido` utiliza `Equipos` y un `Arbitro` para poder realizarse. También se utiliza una asociación entre `Torneo` y `Persona`, ya que el torneo puede registrar personas involucradas mediante apuntadores a la clase base.
-
-- **Composición:** Un `Torneo` contiene `Partidos`, ya que los partidos pertenecen directamente al torneo.
-
-
-## Avance 4
-
-En este avance se revisó que la clase abstracta `Persona` estuviera declarada correctamente mediante el método virtual puro `mostrarInfo()`.
-
-También se agregó un destructor virtual en la clase base para mantener una estructura más correcta al trabajar con apuntadores a `Persona`.
-
-Además, se implementó sobrecarga del operador `==` en clases como `Jugador` y `Equipo`. Esta sobrecarga permite comparar objetos de manera más clara, por ejemplo, para identificar jugadores repetidos por ID o equipos repetidos por nombre.
-
-También se mejoró el archivo `main.cpp` para que el sistema funcione mediante un menú básico en consola, en lugar de ejecutar únicamente pruebas fijas.
-
-## Clases principales
-
-El proyecto trabaja con las siguientes clases:
-
-- `Persona`: clase abstracta que contiene datos generales.
-- `Jugador`: representa a los jugadores registrados en el torneo.
-- `Arbitro`: representa al árbitro asignado a los partidos.
-- `Equipo`: administra la información del equipo y sus jugadores.
-- `Partido`: representa un encuentro entre dos equipos.
-- `Torneo`: administra los equipos, partidos y personas involucradas en el torneo.
+- **Herencia:** `Jugador` y `Arbitro` heredan de la clase abstracta `Persona`.
+- **Agregación:** `Liga` registra objetos de tipo `Persona`, `Equipo` contiene jugadores y `Torneo` registra equipos.
+- **Asociación:** `Partido` utiliza dos equipos, uno como local y otro como visitante. También se asocia con un `Arbitro`.
+- **Composición:** `Torneo` contiene partidos, ya que los partidos pertenecen directamente al torneo.
 
 ## Archivos del proyecto
 
-- `persona.h`: contiene las clases `Persona`, `Jugador` y `Arbitro`.
-- `torneo.h`: contiene las clases `Equipo`, `Partido` y `Torneo`.
-- `main.cpp`: contiene el menú principal y las pruebas funcionales del sistema.
+### persona.h
+Contiene las clases:
+- `Persona`
+- `Jugador`
+- `Arbitro`
 
-## Casos que podrían afectar el funcionamiento del sistema
+### torneo.h
+Contiene las clases:
+- `Liga`
+- `Equipo`
+- `Partido`
+- `Torneo`
 
-Durante el análisis del problema se identificaron algunos casos que podrían afectar el funcionamiento correcto del sistema, por ejemplo:
+### main.cpp
+Contiene el menú principal del programa y permite probar las funcionalidades del sistema.
 
-- Registrar un jugador repetido en el mismo equipo.
-- Programar un partido donde el mismo equipo sea local y visitante.
-- Registrar goles negativos.
-- Crear partidos sin árbitro.
-- Registrar equipos vacíos.
-- Programar partidos con horarios repetidos.
-- Intentar eliminar jugadores inexistentes.
 
+## Validaciones del programa
+El programa incluye algunas validaciones para evitar errores básicos:
+
+- No permite registrar equipos repetidos.
+- No permite registrar jugadores repetidos por ID.
+- No permite registrar árbitros repetidos por ID.
+- No permite agregar al mismo jugador dos veces al mismo equipo.
+- No permite crear partidos si no hay al menos dos equipos registrados.
+- No permite crear partidos si no hay árbitros registrados.
+- No permite crear un partido donde el equipo local y visitante sean el mismo.
+- No permite registrar resultados con goles negativos.
+- No permite cargar los datos de prueba más de una vez.
+  
 ## Cómo compilar y ejecutar desde consola
 
 Para compilar el programa desde consola, primero asegúrate de tener los archivos main.cpp, persona.h y torneo.h en la misma carpeta.
