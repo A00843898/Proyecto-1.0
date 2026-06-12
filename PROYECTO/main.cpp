@@ -1,5 +1,11 @@
 /*
- * Este archivo contiene un menu sencillo para probar el uso del sistema.
+ *
+ * Proyecto Integrador Sistema de Gestion de Torneos Amateur
+ * Georgina Garcia Martinez
+ * 11-06-2026
+ * version : 5
+ * Este archivo contiene el menu principal del programa. Desde aqui se
+ * registran equipos, jugadores, arbitros, partidos y resultados.
  */
 
 #include <iostream>
@@ -14,11 +20,13 @@ const int MAX_EQUIPOS_MAIN = 20;
 const int MAX_JUGADORES_MAIN = 100;
 const int MAX_ARBITROS_MAIN = 30;
 
+// Funcion para limpiar el buffer de entrada
 void limpiarBuffer() {
     cin.clear();
     cin.ignore(10000, '\n');
 }
 
+// Funcion para buscar jugadores por id
 int buscarJugadorPorId(Jugador jugadores[], int totalJugadores, int id) {
     for (int i = 0; i < totalJugadores; i++) {
         if (jugadores[i].getId() == id) {
@@ -28,6 +36,7 @@ int buscarJugadorPorId(Jugador jugadores[], int totalJugadores, int id) {
     return -1;
 }
 
+// Funcion para buscar arbitros por id
 int buscarArbitroPorId(Arbitro arbitros[], int totalArbitros, int id) {
     for (int i = 0; i < totalArbitros; i++) {
         if (arbitros[i].getId() == id) {
@@ -37,6 +46,7 @@ int buscarArbitroPorId(Arbitro arbitros[], int totalArbitros, int id) {
     return -1;
 }
 
+// Funcion para mostrar equipos disponibles
 void mostrarListaEquipos(Equipo equipos[], int totalEquipos) {
     if (totalEquipos == 0) {
         cout << "No hay equipos registrados." << endl;
@@ -48,7 +58,23 @@ void mostrarListaEquipos(Equipo equipos[], int totalEquipos) {
     }
 }
 
-void cargarDatosPrueba(Torneo &torneo, Equipo equipos[], int &totalEquipos,
+/**
+ * cargarDatosPrueba genera objetos para probar el sistema.
+ *
+ * Crea equipos, jugadores y arbitros de ejemplo.
+ *
+ * @param liga objeto Liga.
+ * @param torneo objeto Torneo.
+ * @param equipos arreglo de equipos.
+ * @param totalEquipos contador de equipos.
+ * @param jugadores arreglo de jugadores.
+ * @param totalJugadores contador de jugadores.
+ * @param arbitros arreglo de arbitros.
+ * @param totalArbitros contador de arbitros.
+ * @return
+ */
+void cargarDatosPrueba(Liga &liga, Torneo &torneo,
+                       Equipo equipos[], int &totalEquipos,
                        Jugador jugadores[], int &totalJugadores,
                        Arbitro arbitros[], int &totalArbitros) {
 
@@ -61,26 +87,26 @@ void cargarDatosPrueba(Torneo &torneo, Equipo equipos[], int &totalEquipos,
     totalEquipos++;
 
     jugadores[totalJugadores] = Jugador(1, "Ana Lopez", 19, "Portera", 1);
-    equipos[0].agregarJugador(jugadores[totalJugadores]);
-    torneo.registrarPersona(&jugadores[totalJugadores]);
+    equipos[0].agregarJugador(&jugadores[totalJugadores]);
+    liga.registrarPersona(&jugadores[totalJugadores]);
     totalJugadores++;
 
     jugadores[totalJugadores] = Jugador(2, "Sofia Martinez", 20, "Defensa", 4);
-    equipos[0].agregarJugador(jugadores[totalJugadores]);
-    torneo.registrarPersona(&jugadores[totalJugadores]);
+    equipos[0].agregarJugador(&jugadores[totalJugadores]);
+    liga.registrarPersona(&jugadores[totalJugadores]);
     totalJugadores++;
 
     jugadores[totalJugadores] = Jugador(3, "Regina Perez", 18, "Delantera", 9);
-    equipos[0].agregarJugador(jugadores[totalJugadores]);
-    torneo.registrarPersona(&jugadores[totalJugadores]);
+    equipos[0].agregarJugador(&jugadores[totalJugadores]);
+    liga.registrarPersona(&jugadores[totalJugadores]);
     totalJugadores++;
 
     arbitros[totalArbitros] = Arbitro(1, "Jorge Sanchez", 35, 8);
-    torneo.registrarPersona(&arbitros[totalArbitros]);
+    liga.registrarPersona(&arbitros[totalArbitros]);
     totalArbitros++;
 
     arbitros[totalArbitros] = Arbitro(2, "Laura Fernandez", 30, 5);
-    torneo.registrarPersona(&arbitros[totalArbitros]);
+    liga.registrarPersona(&arbitros[totalArbitros]);
     totalArbitros++;
 
     cout << "Datos de prueba cargados correctamente." << endl;
@@ -88,6 +114,7 @@ void cargarDatosPrueba(Torneo &torneo, Equipo equipos[], int &totalEquipos,
 
 int main() {
 
+    Liga liga("Liga Amateur Queretaro");
     Torneo torneo("Copa Amateur Queretaro");
 
     Equipo equipos[MAX_EQUIPOS_MAIN];
@@ -111,7 +138,7 @@ int main() {
         cout << "4. Registrar arbitro" << endl;
         cout << "5. Mostrar equipos" << endl;
         cout << "6. Mostrar plantilla de un equipo" << endl;
-        cout << "7. Mostrar personas registradas" << endl;
+        cout << "7. Mostrar personas registradas en la liga" << endl;
         cout << "8. Crear partido y registrar resultado" << endl;
         cout << "9. Mostrar partidos" << endl;
         cout << "0. Salir" << endl;
@@ -121,7 +148,7 @@ int main() {
 
         if (opcion == 1) {
             if (!datosCargados) {
-                cargarDatosPrueba(torneo, equipos, totalEquipos,
+                cargarDatosPrueba(liga, torneo, equipos, totalEquipos,
                                   jugadores, totalJugadores,
                                   arbitros, totalArbitros);
                 datosCargados = true;
@@ -193,8 +220,8 @@ int main() {
                     } else {
                         jugadores[totalJugadores] = Jugador(id, nombre, edad, posicion, numero);
 
-                        equipos[equipoElegido - 1].agregarJugador(jugadores[totalJugadores]);
-                        torneo.registrarPersona(&jugadores[totalJugadores]);
+                        equipos[equipoElegido - 1].agregarJugador(&jugadores[totalJugadores]);
+                        liga.registrarPersona(&jugadores[totalJugadores]);
 
                         totalJugadores++;
                     }
@@ -228,7 +255,7 @@ int main() {
                     limpiarBuffer();
 
                     arbitros[totalArbitros] = Arbitro(id, nombre, edad, experiencia);
-                    torneo.registrarPersona(&arbitros[totalArbitros]);
+                    liga.registrarPersona(&arbitros[totalArbitros]);
 
                     totalArbitros++;
                 }
@@ -270,11 +297,11 @@ int main() {
             limpiarBuffer();
 
             if (filtro == 1) {
-                torneo.mostrarPersonas();
+                liga.mostrarPersonas();
             } else if (filtro == 2) {
-                torneo.mostrarPersonas("jugador");
+                liga.mostrarPersonas("jugador");
             } else if (filtro == 3) {
-                torneo.mostrarPersonas("arbitro");
+                liga.mostrarPersonas("arbitro");
             } else {
                 cout << "Opcion invalida." << endl;
             }
@@ -326,7 +353,7 @@ int main() {
                     Partido partido(fecha, hora,
                                     equipos[local - 1],
                                     equipos[visitante - 1],
-                                    arbitros[arb - 1]);
+                                    &arbitros[arb - 1]);
 
                     cout << "Goles del equipo local: ";
                     cin >> golesLocal;

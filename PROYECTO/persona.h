@@ -1,6 +1,12 @@
 /*
- * Contiene la clase abstracta Persona
- * y las clases Jugador y Arbitro que heredan de Persona.
+ *
+ * Proyecto Integrador Sistema de Gestion de Torneos Amateur
+ * Georgina Garcia Martinez
+ * 11-06-2026
+ * version : 5
+ * Este archivo define la clase abstracta Persona y las clases heredadas
+ * Jugador y Arbitro. Estas clases representan a las personas que participan
+ * en la liga.
  */
 
 #ifndef PERSONA_H_
@@ -11,16 +17,18 @@
 
 using namespace std;
 
-// Clase abstracta
+// Declaracion de clase Persona que es abstracta
 class Persona {
 
 protected:
+    // Declaro variables de instancia
     int id;
     string nombre;
     int edad;
     string tipo;
 
 public:
+    // Declaro constructores
     Persona() {
         id = 0;
         nombre = "";
@@ -35,9 +43,9 @@ public:
         tipo = tip;
     }
 
-    // usar correctamente apuntadores a Persona
     virtual ~Persona() {}
 
+    // Declaro metodos publicos
     int getId() {
         return id;
     }
@@ -62,18 +70,19 @@ public:
         edad = ed;
     }
 
-    // hace que Persona sea clase abstracta
-    virtual void mostrarInfo() = 0;
+    virtual void mostrarInfo() = 0; // metodo abstracto que sera sobreescrito
 };
 
-// Clase Jugador que hereda de Persona
+// Declaro objeto Jugador que hereda de Persona
 class Jugador : public Persona {
 
 private:
+    // Variables de instancia del objeto
     string posicion;
     int numero;
 
 public:
+    // Declaro constructores
     Jugador() : Persona(0, "", 0, "jugador") {
         posicion = "";
         numero = 0;
@@ -85,6 +94,7 @@ public:
         numero = num;
     }
 
+    // Declaro metodos publicos
     string getPosicion() {
         return posicion;
     }
@@ -102,12 +112,18 @@ public:
     }
 
     // Sobrecarga del operador ==
-    // Dos jugadores se consideran iguales si tienen el mismo ID.
     bool operator==(Jugador otro) {
         return id == otro.getId();
     }
 
-    // Sobreescritura del metodo mostrarInfo()
+    /**
+     * mostrarInfo imprime los datos del jugador.
+     *
+     * Muestra los valores de los atributos en pantalla.
+     *
+     * @param
+     * @return
+     */
     void mostrarInfo() {
         cout << "Jugador ID: " << id
              << " | Nombre: " << nombre
@@ -117,13 +133,15 @@ public:
     }
 };
 
-// Clase Arbitro que hereda de Persona
+// Declaro objeto Arbitro que hereda de Persona
 class Arbitro : public Persona {
 
 private:
+    // Variable de instancia del objeto
     int experiencia;
 
 public:
+    // Declaro constructores
     Arbitro() : Persona(0, "", 0, "arbitro") {
         experiencia = 0;
     }
@@ -133,6 +151,7 @@ public:
         experiencia = exp;
     }
 
+    // Declaro metodos publicos
     int getExperiencia() {
         return experiencia;
     }
@@ -141,7 +160,14 @@ public:
         experiencia = exp;
     }
 
-    // Sobreescritura del metodo mostrarInfo()
+    /**
+     * mostrarInfo imprime los datos del arbitro.
+     *
+     * Muestra los valores de los atributos en pantalla.
+     *
+     * @param
+     * @return
+     */
     void mostrarInfo() {
         cout << "Arbitro ID: " << id
              << " | Nombre: " << nombre
@@ -150,4 +176,4 @@ public:
     }
 };
 
-#endif
+#endif // PERSONA_H_
